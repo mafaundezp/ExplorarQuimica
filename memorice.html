@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memorice: grupos funcionales</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      color: #203047;
+      background: #F2F6FC;
+    }
+
+    main {
+      width: min(1000px, 100%);
+      margin: auto;
+      padding: 26px;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 8px 28px #1e3a5f18;
+    }
+
+    h1, h2 {
+      color: #174a7e;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .controls, .stats {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+
+    input, select, button {
+      font: inherit;
+      padding: 10px 14px;
+      border-radius: 9px;
+    }
+
+    select {
+      border: 1px solid #aabbd0;
+      background: #ffffff;
+    }
+
+    button {
+      border: 0;
+      color: #ffffff;
+      background: #1769aa;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0f5289;
+    }
+
+    #board {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    /* Tarjeta y efecto de giro */
+    .card {
+      width: 100%;
+      aspect-ratio: 225 / 195;
+      padding: 0;
+      border: 0;
+      border-radius: 14px;
+      background: transparent;
+      perspective: 1000px;
+    }
+
+    .card-inner {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      transform-style: preserve-3d;
+      transition: transform 600ms ease;
+    }
+
+    .card.is-flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 2px solid #d7e4f2;
+      border-radius: 14px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .card-face-back {
+      background: #DCEBFA;
+    }
+
+    .card-face-back img {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      object-fit: contain;
+    }
+
+    .card-face-front {
+      padding: 10px;
+      background: #ffffff;
+      color: #203047;
+      transform: rotateY(180deg);
+      text-align: center;
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+
+    .card-face-front svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .card.matched .card-face {
+      border-color: #40a879;
+    }
+
+    .card:disabled {
+      cursor: default;
+    }
+
+    #message {
+      min-height: 24px;
+      font-weight: bold;
+      color: #176b49;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    th, td {
+      padding: 9px;
+      border-bottom: 1px solid #d7e4f2;
+      text-align: left;
+    }
+
+    th {
+      background: #eaf2fb;
+    }
+
+    @media (max-width: 650px) {
+      #board {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      main {
+        padding: 18px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card-inner {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>Memorice: grupos funcionales</h1>
+    <p>Encuentra cada estructura química y relaciónala con su nombre.</p>
+
+    <div class="controls">
+      <label for="level">Nivel:</label>
+
+      <select id="level">
+        <option value="8">Fácil — 8 estructuras</option>
+        <option value="10">Medio — 10 estructuras</option>
+        <option value="12">Difícil — 12 estructuras</option>
+        <option value="14">Avanzado — 14 estructuras</option>
+      </select>
+
+      <button id="startButton" type="button">Comenzar</button>
+      <button id="restartButton" type="button" hidden>
+        Reiniciar partida
+      </button>
+    </div>
+
+    <div class="stats" aria-live="polite">
+      <span>Parejas: <b id="correct">0 / 0</b></span>
+      <span>Incorrectas: <b id="incorrect">0</b></span>
+      <span>Intentos: <b id="attempts">0</b></span>
+      <span>Tiempo: <b id="time">00:00</b></span>
+    </div>
+
+    <section id="board" aria-label="Tarjetas del memorice"></section>
+    <p id="message" aria-live="polite"></p>
+
+    <section>
+      <h2>Resultados guardados en este equipo</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Jugador</th>
+              <th>Nivel</th>
+              <th>Parejas</th>
+              <th>Incorrectas</th>
+              <th>Intentos</th> 
+              <th>Tiempo</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="results"></tbody>
+        </table>
+      </div>
+
+      <button id="clearResults" type="button">Borrar historial</button>
+    </section>
+  </main>
+
+  <script>
+    const svgFile = "grupos_funcionales.svg";
+    const backImageFile = "reverso.svg";
+    const storageKey = "memorice_grupos_funcionales_resultados";
+
+    // Las coordenadas corresponden a las tarjetas del SVG.
+    const pairs = [
+      { id: "alcohol", name: "Alcohol", x: 10, y: 10 },
+      { id: "aldehido", name: "Aldehído", x: 247, y: 10 },
+      { id: "cetona", name: "Cetona", x: 484, y: 10 },
+      { id: "acido", name: "Ácido carboxílico", x: 721, y: 10 },
+
+      { id: "ester", name: "Éster", x: 10, y: 225 },
+      { id: "eter", name: "Éter", x: 247, y: 225 },
+      { id: "amina", name: "Amina", x: 484, y: 225 },
+      { id: "amida", name: "Amida", x: 721, y: 225 },
+
+      { id: "anhidrido", name: "Anhídrido de ácido", x: 10, y: 440 },
+      { id: "halogenuro", name: "Halogenuro de ácido", x: 247, y: 440 },
+      { id: "nitro", name: "Grupo nitro", x: 484, y: 440 },
+      { id: "tiol", name: "Tiol", x: 721, y: 440 },
+
+      { id: "tioeter", name: "Tioéter", x: 247, y: 655 },
+      { id: "tioester", name: "Tioéster", x: 484, y: 655 }
+    ];
+
+    const board = document.querySelector("#board");
+    const correctDisplay = document.querySelector("#correct");
+    const incorrectDisplay = document.querySelector("#incorrect");
+    const attemptsDisplay = document.querySelector("#attempts");
+    const timeDisplay = document.querySelector("#time");
+    const message = document.querySelector("#message");
+
+    let selectedPairs = [];
+    let selectedLevel = "";
+    let firstCard = null;
+    let locked = false;
+    let attempts = 0;
+    let correct = 0;
+    let incorrect = 0;
+    let seconds = 0;
+    let timer = null;
+    let gameStarted = false;
+
+    function getResults() {
+      try {
+        return JSON.parse(localStorage.getItem(storageKey)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function renderResults() {
+      const tbody = document.querySelector("#results");
+      tbody.replaceChildren();
+
+      getResults().forEach(result => {
+        const row = document.createElement("tr");
+
+        [
+          result.player,
+          result.level,
+          `${result.correct} / ${result.totalPairs}`,
+          result.incorrect,
+          result.attempts,
+          result.time,
+          result.date
+        ].forEach(value => {
+          const cell = document.createElement("td");
+          cell.textContent = value;
+          row.appendChild(cell);
+        });
+
+        tbody.appendChild(row);
+      });
+    }
+
+    function formatTime(value) {
+      const minutes = String(Math.floor(value / 60)).padStart(2, "0");
+      const remainingSeconds = String(value % 60).padStart(2, "0");
+      return `${minutes}:${remainingSeconds}`;
+    }
+
+    function updateStats() {
+      correctDisplay.textContent =
+        `${correct} / ${selectedPairs.length}`;
+
+      incorrectDisplay.textContent = incorrect;
+      attemptsDisplay.textContent = attempts;
+      timeDisplay.textContent = formatTime(seconds);
+    }
+
+    function shuffle(items) {
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+
+      return items;
+    }
+
+    function makeStructure(pair) {
+      const svg = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "svg"
+      );
+
+      svg.setAttribute("viewBox", `${pair.x} ${pair.y} 225 195`);
+      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+      svg.setAttribute("aria-hidden", "true");
+
+      const image = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "image"
+      );
+
+      image.setAttribute("href", svgFile);
+      image.setAttribute("x", "0");
+      image.setAttribute("y", "0");
+      image.setAttribute("width", "960");
+      image.setAttribute("height", "860");
+
+      svg.appendChild(image);
+      return svg;
+    }
+
+
+    let audioContext;
+
+    function playSuccessBell() {
+      const AudioContextClass =
+        window.AudioContext || window.webkitAudioContext;
+
+      if (!AudioContextClass) return;
+
+      audioContext ??= new AudioContextClass();
+
+      if (audioContext.state === "suspended") {
+        audioContext.resume();
+      }
+
+      const now = audioContext.currentTime;
+
+      // Dos tonos breves para dar un sonido de campanilla.
+      [880, 1174.66].forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        const start = now + index * 0.12;
+
+        oscillator.type = "sine";
+        oscillator.frequency.value = frequency;
+
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.12, start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.45);
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.start(start);
+        oscillator.stop(start + 0.46);
+      });
+    }
+
+    function playSoftBuzz() {
+      const AudioContextClass =
+        window.AudioContext || window.webkitAudioContext;
+
+      if (!AudioContextClass) return;
+
+      audioContext ??= new AudioContextClass();
+
+      if (audioContext.state === "suspended") {
+        audioContext.resume();
+      }
+
+      const now = audioContext.currentTime;
+
+      [440, 330].forEach((frequency, index) => {
+        const start = now + index * 0.12;
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(frequency, start);
+
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.045, start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.12);
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.start(start);
+        oscillator.stop(start + 0.13);
+      });
+    }
+
+
+    function makeCard(item) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "card";
+      button.setAttribute("aria-label", "Tarjeta oculta");
+
+      const inner = document.createElement("span");
+      inner.className = "card-inner";
+
+      const back = document.createElement("span");
+      back.className = "card-face card-face-back";
+
+      const logo = document.createElement("img");
+      logo.src = backImageFile;
+      logo.alt = "";
+      back.appendChild(logo);
+
+      const front = document.createElement("span");
+      front.className = "card-face card-face-front";
+
+      if (item.kind === "structure") {
+        front.appendChild(makeStructure(item.pair));
+      } else {
+        front.textContent = item.pair.name;
+      }
+
+      inner.append(back, front);
+      button.appendChild(inner);
+
+      button.addEventListener("click", () => {
+        if (
+          locked ||
+          !gameStarted ||
+          button.disabled ||
+          button.classList.contains("is-flipped")
+        ) {
+          return;
+        }
+
+        if (!timer) {
+          timer = setInterval(() => {
+            seconds++;
+            updateStats();
+          }, 1000);
+        }
+
+        button.classList.add("is-flipped");
+        button.setAttribute("aria-label", item.pair.name);
+
+        if (!firstCard) {
+          firstCard = { button, item };
+          return;
+        }
+
+        attempts++;
+
+        const isMatch =
+          firstCard.item.pair.id === item.pair.id &&
+          firstCard.item.kind !== item.kind;
+
+        if (isMatch) {
+          correct++;
+          playSuccessBell();
+
+          firstCard.button.classList.add("matched");
+          button.classList.add("matched");
+          firstCard.button.disabled = true;
+          button.disabled = true;
+          firstCard = null;
+
+          updateStats();
+
+          if (correct === selectedPairs.length) {
+            finishGame();
+          }
+
+          return;
+        }
+
+        incorrect++;
+        playSoftBuzz();
+        locked = true;
+
+        const previousButton = firstCard.button;
+        firstCard = null;
+        updateStats();
+
+        setTimeout(() => {
+          previousButton.classList.remove("is-flipped");
+          button.classList.remove("is-flipped");
+          previousButton.setAttribute("aria-label", "Tarjeta oculta");
+          button.setAttribute("aria-label", "Tarjeta oculta");
+          locked = false;
+        }, 900);
+      });
+
+      return button;
+    }
+
+    function startGame() {
+      const levelSelect = document.querySelector("#level");
+      const numberOfPairs = Number(levelSelect.value);
+
+      selectedPairs = pairs.slice(0, numberOfPairs);
+      selectedLevel =
+        levelSelect.options[levelSelect.selectedIndex].text;
+
+      clearInterval(timer);
+      timer = null;
+      seconds = 0;
+      attempts = 0;
+      correct = 0;
+      incorrect = 0;
+      firstCard = null;
+      locked = false;
+      gameStarted = true;
+
+      updateStats();
+      message.textContent = "";
+      board.replaceChildren();
+
+      document.querySelector("#startButton").hidden = true;
+      document.querySelector("#restartButton").hidden = false;
+
+      const cards = [];
+
+      selectedPairs.forEach(pair => {
+        cards.push({ pair, kind: "structure" });
+        cards.push({ pair, kind: "name" });
+      });
+
+      shuffle(cards).forEach(item => {
+        board.appendChild(makeCard(item));
+      });
+    }
+
+    function finishGame() {
+      clearInterval(timer);
+      timer = null;
+      gameStarted = false;
+
+      const result = {
+        player: "Jugador",
+        level: selectedLevel,
+        correct,
+        totalPairs: selectedPairs.length,
+        incorrect,
+        attempts,
+        time: formatTime(seconds),
+        date: new Date().toLocaleString("es-CL")
+      };
+
+      try {
+        const results = getResults();
+        results.unshift(result);
+        localStorage.setItem(storageKey, JSON.stringify(results));
+        renderResults();
+
+        message.textContent =
+          `¡Partida completada! Encontraste ${correct} parejas ` +
+          `en ${formatTime(seconds)}. Resultado guardado en este equipo.`;
+      } catch {
+        message.textContent =
+          "Partida completada, pero el navegador no permitió guardar el resultado.";
+      }
+    }
+
+    document
+      .querySelector("#startButton")
+      .addEventListener("click", startGame);
+
+    document
+      .querySelector("#restartButton")
+      .addEventListener("click", startGame);
+
+    document
+      .querySelector("#clearResults")
+      .addEventListener("click", () => {
+        if (confirm("¿Quieres borrar todos los resultados de este equipo?")) {
+          localStorage.removeItem(storageKey);
+          renderResults();
+        }
+      });
+
+    updateStats();
+    renderResults();
+  </script>
+</body>
+</html>
