@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Recurso interactivo para estudiar grupos funcionales de química orgánica y practicar con un memorice.">
+  <title>Grupos Funcionales</title>
+
+  <style>
+    :root {
+      --azul: #174a7e;
+      --azul-oscuro: #203047;
+      --azul-claro: #eaf2fb;
+      --fondo: #f2f6fc;
+      --borde: #d7e4f2;
+      --verde: #176b49;
+      --blanco: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--fondo);
+      color: var(--azul-oscuro);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      padding: 24px 5vw;
+      color: white;
+      background: linear-gradient(135deg, #123b5d, #2d6a8a);
+    }
+
+    header h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+    }
+
+    header p { margin: 0; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 5vw;
+      background: white;
+      border-bottom: 1px solid var(--borde);
+      box-shadow: 0 2px 6px #00000010;
+    }
+
+    button, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .game-launch,
+    .secondary-button,
+    .clear-button {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 16px;
+      font-weight: bold;
+    }
+
+    .game-launch {
+      color: white;
+      background: #d65a00;
+    }
+
+    .game-launch:hover { background: #b94d00; }
+
+    .secondary-button {
+      color: white;
+      background: var(--azul);
+    }
+
+    .clear-button {
+      margin-top: 12px;
+      color: white;
+      background: #64748b;
+    }
+
+    .page {
+      width: min(1200px, 94%);
+      margin: 24px auto 50px;
+    }
+
+    .theory-layout {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.8fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .menu, .detail, .game-panel {
+      padding: 20px;
+      border: 1px solid var(--borde);
+      border-radius: 14px;
+      background: white;
+      box-shadow: 0 3px 12px #2030470b;
+    }
+
+    .menu h2, .detail h2, .game-panel h2 {
+      margin-top: 0;
+      color: var(--azul);
+    }
+
+    .group-menu {
+      display: grid;
+      gap: 8px;
+    }
+
+    .group-option {
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 68px;
+      padding: 6px;
+      border: 1px solid var(--borde);
+      border-radius: 9px;
+      color: var(--azul-oscuro);
+      background: #f8fbff;
+      text-align: left;
+    }
+
+    .group-option:hover,
+    .group-option.active {
+      border-color: var(--azul);
+      background: var(--azul-claro);
+    }
+
+    .group-option strong {
+      font-size: 0.95rem;
+    }
+
+    .mini-structure {
+      display: block;
+      width: 74px;
+      height: 58px;
+      background: white;
+      border-radius: 6px;
+    }
+
+    .detail-structure {
+      display: block;
+      width: min(100%, 460px);
+      aspect-ratio: 225 / 195;
+      margin: 12px auto 20px;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      background: white;
+    }
+
+    .description {
+      padding: 15px;
+      border-left: 4px solid var(--azul);
+      border-radius: 7px;
+      background: var(--azul-claro);
+    }
+
+    .description p { margin: 0; }
+
+    .game-panel[hidden],
+    .theory-view[hidden] {
+      display: none;
+    }
+
+    .game-controls, .stats {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .game-controls select {
+      padding: 9px 12px;
+      border: 1px solid #aabbd0;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .stats {
+      gap: 18px;
+      font-size: 0.95rem;
+    }
+
+    #board {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    /* Tarjetas con efecto de volteo */
+    .card {
+      width: 100%;
+      aspect-ratio: 225 / 195;
+      padding: 0;
+      border: 0;
+      border-radius: 14px;
+      background: transparent;
+      perspective: 1000px;
+    }
+
+    .card-inner {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      transform-style: preserve-3d;
+      transition: transform 600ms ease;
+    }
+
+    .card.is-flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 2px solid var(--borde);
+      border-radius: 14px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .card-face-back {
+      background: #DCEBFA;
+    }
+
+    .card-face-back img {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      object-fit: contain;
+    }
+
+    .card-face-front {
+      padding: 10px;
+      color: var(--azul-oscuro);
+      background: white;
+      transform: rotateY(180deg);
+      text-align: center;
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+
+    .card-face-front svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .card.matched .card-face {
+      border-color: #40a879;
+    }
+
+    .card:disabled { cursor: default; }
+
+    #message {
+      min-height: 24px;
+      color: var(--verde);
+      font-weight: bold;
+    }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      margin-top: 12px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 9px;
+      border-bottom: 1px solid var(--borde);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th { background: var(--azul-claro); }
+
+    @media (max-width: 800px) {
+      .theory-layout { grid-template-columns: 1fr; }
+      .group-menu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #board { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 520px) {
+      .topbar { position: static; }
+      .group-menu, #board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .menu, .detail, .game-panel { padding: 15px; }
+      .group-option { grid-template-columns: 58px 1fr; }
+      .mini-structure { width: 58px; height: 50px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card-inner { transition: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Grupos Funcionales</h1>
+    <p>Explora estructuras generales y practica su reconocimiento en un memorice. Creado para el Curso QIM-201G 2do semestre 2026
+    </p>
+  </header>
+
+  <nav class="topbar" aria-label="Navegación principal">
+    <strong id="viewLabel">Sección teórica</strong>
+    <button id="openGame" class="game-launch" type="button">
+      Abrir memorice
+    </button>
+  </nav>
+
+  <main class="page">
+    <!-- SECCIÓN TEÓRICA -->
+    <section id="theoryView" class="theory-view">
+      <div class="theory-layout">
+        <aside class="menu">
+          <h2>Grupos funcionales</h2>
+          <p>Selecciona un grupo para ver su estructura y descripción.</p>
+          <div id="groupMenu" class="group-menu"></div>
+        </aside>
+
+        <article id="groupDetail" class="detail" aria-live="polite"></article>
+      </div>
+    </section>
+
+    <!-- JUEGO MEMORICE -->
+    <section id="gameView" class="game-panel" hidden>
+      <h2>Memorice de grupos funcionales</h2>
+      <p>Encuentra cada estructura y relaciónala con su nombre.</p>
+
+      <div class="game-controls">
+        <label for="level">Nivel:</label>
+        <select id="level">
+          <option value="8">Fácil — 8 parejas</option>
+          <option value="10">Medio — 10 parejas</option>
+          <option value="12">Difícil — 12 parejas</option>
+          <option value="14">Avanzado — 14 parejas</option>
+        </select>
+
+        <button id="startButton" class="secondary-button" type="button">
+          Comenzar
+        </button>
+        <button id="restartButton" class="secondary-button" type="button" hidden>
+          Reiniciar partida
+        </button>
+        <button id="backToTheory" class="secondary-button" type="button">
+          Volver a la teoría
+        </button>
+      </div>
+
+      <div class="stats" aria-live="polite">
+        <span>Parejas: <b id="correct">0 / 0</b></span>
+        <span>Incorrectas: <b id="incorrect">0</b></span>
+        <span>Intentos: <b id="attempts">0</b></span>
+        <span>Tiempo: <b id="time">00:00</b></span>
+      </div>
+
+      <section id="board" aria-label="Tarjetas del memorice"></section>
+      <p id="message" aria-live="polite"></p>
+
+      <section>
+        <h2>Resultados guardados en este equipo</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Jugador</th>
+                <th>Nivel</th>
+                <th>Parejas</th>
+                <th>Incorrectas</th>
+                <th>Intentos</th>
+                <th>Tiempo</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody id="results"></tbody>
+          </table>
+        </div>
+        <button id="clearResults" class="clear-button" type="button">
+          Borrar historial
+        </button>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const svgFile = "grupos_funcionales.svg";
+    const backImageFile = "reverso.svg";
+    const storageKey = "grupos_funcionales_memorice_resultados";
+
+    const groups = [
+      {
+        id: "alcohol",
+        name: "Alcohol",
+        x: 10, y: 10,
+        form: "R–OH",
+        description: "Presenta un grupo hidroxilo (–OH) unido a un carbono saturado. La R representa el resto de la molécula. Esta es una representación general; los alcoholes pueden clasificarse según el tipo de carbono que porta el grupo hidroxilo."
+      },
+      {
+        id: "aldehido",
+        name: "Aldehído",
+        x: 247, y: 10,
+        form: "R–C(=O)–H",
+        description: "Contiene un grupo carbonilo terminal unido a un hidrógeno y a un resto orgánico. Se representa como –CHO y suele ubicarse al final de la cadena carbonada."
+      },
+      {
+        id: "cetona",
+        name: "Cetona",
+        x: 484, y: 10,
+        form: "R–C(=O)–R′",
+        description: "Contiene un grupo carbonilo unido a dos restos carbonados. En las cetonas, el carbono del carbonilo se encuentra dentro de la cadena o unido a dos grupos orgánicos."
+      },
+      {
+        id: "acido",
+        name: "Ácido carboxílico",
+        x: 721, y: 10,
+        form: "R–C(=O)–OH",
+        description: "Presenta el grupo carboxilo (–COOH), formado por un carbonilo y un hidroxilo unidos al mismo carbono. Puede donar un protón en una reacción ácido-base."
+      },
+      {
+        id: "ester",
+        name: "Éster",
+        x: 10, y: 225,
+        form: "R–C(=O)–O–R′",
+        description: "Contiene el grupo –COO– entre dos restos orgánicos. Puede considerarse un derivado de ácido carboxílico en el que el hidrógeno del grupo –OH se reemplaza por un grupo orgánico."
+      },
+      {
+        id: "eter",
+        name: "Éter",
+        x: 247, y: 225,
+        form: "R–O–R′",
+        description: "Un átomo de oxígeno enlaza dos grupos orgánicos. Los restos R y R′ pueden ser iguales o diferentes."
+      },
+      {
+        id: "amina",
+        name: "Amina",
+        x: 484, y: 225,
+        form: "R–NH₂",
+        description: "Las aminas son derivados orgánicos del amoníaco. La imagen muestra una amina primaria; también existen aminas secundarias (R₂NH) y terciarias (R₃N)."
+      },
+      {
+        id: "amida",
+        name: "Amida",
+        x: 721, y: 225,
+        form: "R–C(=O)–NH₂",
+        description: "Contiene un carbonilo unido directamente a un nitrógeno. La estructura mostrada corresponde a una amida primaria; también hay amidas con uno o ambos hidrógenos del nitrógeno sustituidos."
+      },
+      {
+        id: "anhidrido",
+        name: "Anhídrido de ácido",
+        x: 10, y: 440,
+        form: "R–C(=O)–O–C(=O)–R′",
+        description: "Presenta dos grupos acilo unidos por un átomo de oxígeno. Los anhídridos de ácido se consideran derivados de ácidos carboxílicos."
+      },
+      {
+        id: "halogenuro",
+        name: "Halogenuro de ácido",
+        x: 247, y: 440,
+        form: "R–C(=O)–X",
+        description: "Contiene un grupo acilo unido a un halógeno. X representa un halógeno, como Cl, Br, F o I. La tarjeta de la lámina muestra específicamente el cloruro de acilo."
+      },
+      {
+        id: "nitro",
+        name: "Grupo nitro",
+        x: 484, y: 440,
+        form: "R–NO₂",
+        description: "El grupo nitro está formado por nitrógeno y oxígeno enlazados al resto orgánico. R–NO₂ es una fórmula condensada; la distribución de enlaces y cargas puede representarse mediante estructuras de resonancia."
+      },
+      {
+        id: "tiol",
+        name: "Tiol",
+        x: 721, y: 440,
+        form: "R–SH",
+        description: "Contiene un grupo sulfhidrilo (–SH) unido a un resto orgánico. Es el análogo con azufre de los alcoholes, aunque sus propiedades químicas son diferentes."
+      },
+      {
+        id: "tioeter",
+        name: "Tioéter",
+        x: 247, y: 655,
+        form: "R–S–R′",
+        description: "Un átomo de azufre enlaza dos grupos orgánicos. También se denomina sulfuro orgánico; R y R′ pueden ser iguales o diferentes."
+      },
+      {
+        id: "tioester",
+        name: "Tioéster",
+        x: 484, y: 655,
+        form: "R–C(=O)–S–R′",
+        description: "Contiene un grupo acilo unido a azufre. Puede considerarse relacionado con un éster, en el que el oxígeno enlazado al grupo acilo se reemplaza por azufre."
+      }
+    ];
+
+    const theoryView = document.querySelector("#theoryView");
+    const gameView = document.querySelector("#gameView");
+    const groupMenu = document.querySelector("#groupMenu");
+    const groupDetail = document.querySelector("#groupDetail");
+    const viewLabel = document.querySelector("#viewLabel");
+
+    function makeStructureSVG(group, className) {
+      const svg = document.createElementNS(
+        "http://www.w3.org/2000/svg", "svg"
+      );
+      svg.setAttribute("viewBox", `${group.x} ${group.y} 225 195`);
+      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+      svg.setAttribute("role", "img");
+      svg.setAttribute("aria-label", `Estructura: ${group.name}`);
+      svg.classList.add(className);
+
+      const image = document.createElementNS(
+        "http://www.w3.org/2000/svg", "image"
+      );
+      image.setAttribute("href", svgFile);
+      image.setAttribute("x", "0");
+      image.setAttribute("y", "0");
+      image.setAttribute("width", "960");
+      image.setAttribute("height", "860");
+
+      svg.appendChild(image);
+      return svg;
+    }
+
+    function showGroup(group) {
+      groupDetail.replaceChildren();
+
+      const heading = document.createElement("h2");
+      heading.textContent = group.name;
+
+      const form = document.createElement("p");
+      const strong = document.createElement("strong");
+      strong.textContent = "Forma general: ";
+      form.append(strong, document.createTextNode(group.form));
+
+      groupDetail.append(
+        heading,
+        form,
+        makeStructureSVG(group, "detail-structure")
+      );
+
+      const descriptionBox = document.createElement("div");
+      descriptionBox.className = "description";
+
+      const description = document.createElement("p");
+      description.textContent = group.description;
+      descriptionBox.appendChild(description);
+
+      groupDetail.appendChild(descriptionBox);
+
+      document.querySelectorAll(".group-option").forEach(button => {
+        const active = button.dataset.id === group.id;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+    }
+
+    function renderGroupMenu() {
+      groups.forEach(group => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "group-option";
+        button.dataset.id = group.id;
+        button.setAttribute("aria-pressed", "false");
+
+        button.appendChild(makeStructureSVG(group, "mini-structure"));
+
+        const name = document.createElement("strong");
+        name.textContent = group.name;
+        button.appendChild(name);
+
+        button.addEventListener("click", () => showGroup(group));
+        groupMenu.appendChild(button);
+      });
+
+      showGroup(groups[0]);
+    }
+
+    function showTheory() {
+      gameView.hidden = true;
+      theoryView.hidden = false;
+      viewLabel.textContent = "Sección teórica";
+      document.querySelector("#openGame").hidden = false;
+    }
+
+    function showGame() {
+      theoryView.hidden = true;
+      gameView.hidden = false;
+      viewLabel.textContent = "Memorice";
+      document.querySelector("#openGame").hidden = true;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.querySelector("#openGame").addEventListener("click", showGame);
+    document.querySelector("#backToTheory").addEventListener("click", showTheory);
+
+    /* Lógica del memorice */
+    const board = document.querySelector("#board");
+    const correctDisplay = document.querySelector("#correct");
+    const incorrectDisplay = document.querySelector("#incorrect");
+    const attemptsDisplay = document.querySelector("#attempts");
+    const timeDisplay = document.querySelector("#time");
+    const message = document.querySelector("#message");
+
+    let selectedGroups = [];
+    let selectedLevel = "";
+    let firstCard = null;
+    let locked = false;
+    let attempts = 0;
+    let correct = 0;
+    let incorrect = 0;
+    let seconds = 0;
+    let timer = null;
+    let gameStarted = false;
+    let audioContext = null;
+
+    function formatTime(value) {
+      const minutes = String(Math.floor(value / 60)).padStart(2, "0");
+      const secs = String(value % 60).padStart(2, "0");
+      return `${minutes}:${secs}`;
+    }
+
+    function updateStats() {
+      correctDisplay.textContent = `${correct} / ${selectedGroups.length}`;
+      incorrectDisplay.textContent = incorrect;
+      attemptsDisplay.textContent = attempts;
+      timeDisplay.textContent = formatTime(seconds);
+    }
+
+    function shuffle(items) {
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [items[i], items[j]] = [items[j], items[i]];
+      }
+      return items;
+    }
+
+    function playTone(frequency, start, duration, volume, type = "sine") {
+      const AudioClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioClass) return;
+
+      audioContext ??= new AudioClass();
+
+      if (audioContext.state === "suspended") {
+        audioContext.resume();
+      }
+
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, start);
+
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(volume, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+      oscillator.start(start);
+      oscillator.stop(start + duration + 0.01);
+    }
+
+    function playSuccessBell() {
+      if (!audioContext) {
+        const AudioClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioClass) return;
+        audioContext = new AudioClass();
+      }
+
+      const now = audioContext.currentTime;
+      playTone(880, now, 0.35, 0.08);
+      playTone(1174.66, now + 0.12, 0.4, 0.06);
+    }
+
+    function playMissSound() {
+      if (!audioContext) {
+        const AudioClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioClass) return;
+        audioContext = new AudioClass();
+      }
+
+      const now = audioContext.currentTime;
+      playTone(440, now, 0.12, 0.035);
+      playTone(330, now + 0.13, 0.14, 0.035);
+    }
+
+    function makeCard(item) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "card";
+      button.setAttribute("aria-label", "Tarjeta oculta");
+
+      const inner = document.createElement("span");
+      inner.className = "card-inner";
+
+      const back = document.createElement("span");
+      back.className = "card-face card-face-back";
+
+      const logo = document.createElement("img");
+      logo.src = backImageFile;
+      logo.alt = "";
+      back.appendChild(logo);
+
+      const front = document.createElement("span");
+      front.className = "card-face card-face-front";
+
+      if (item.kind === "structure") {
+        front.appendChild(makeStructureSVG(item.group, "game-structure"));
+      } else {
+        front.textContent = item.group.name;
+      }
+
+      inner.append(back, front);
+      button.appendChild(inner);
+
+      button.addEventListener("click", () => {
+        if (
+          locked ||
+          !gameStarted ||
+          button.disabled ||
+          button.classList.contains("is-flipped")
+        ) return;
+
+        if (!timer) {
+          timer = setInterval(() => {
+            seconds++;
+            updateStats();
+          }, 1000);
+        }
+
+        button.classList.add("is-flipped");
+        button.setAttribute("aria-label", item.group.name);
+
+        if (!firstCard) {
+          firstCard = { button, item };
+          return;
+        }
+
+        attempts++;
+
+        const isMatch =
+          firstCard.item.group.id === item.group.id &&
+          firstCard.item.kind !== item.kind;
+
+        if (isMatch) {
+          correct++;
+          playSuccessBell();
+
+          firstCard.button.classList.add("matched");
+          button.classList.add("matched");
+          firstCard.button.disabled = true;
+          button.disabled = true;
+          firstCard = null;
+          updateStats();
+
+          if (correct === selectedGroups.length) finishGame();
+          return;
+        }
+
+        incorrect++;
+        playMissSound();
+        locked = true;
+
+        const previousButton = firstCard.button;
+        firstCard = null;
+        updateStats();
+
+        setTimeout(() => {
+          previousButton.classList.remove("is-flipped");
+          button.classList.remove("is-flipped");
+          previousButton.setAttribute("aria-label", "Tarjeta oculta");
+          button.setAttribute("aria-label", "Tarjeta oculta");
+          locked = false;
+        }, 900);
+      });
+
+      return button;
+    }
+
+    function startGame() {
+      const level = document.querySelector("#level");
+      const numberOfGroups = Number(level.value);
+
+      selectedGroups = groups.slice(0, numberOfGroups);
+      selectedLevel = level.options[level.selectedIndex].text;
+
+      clearInterval(timer);
+      timer = null;
+      seconds = 0;
+      attempts = 0;
+      correct = 0;
+      incorrect = 0;
+      firstCard = null;
+      locked = false;
+      gameStarted = true;
+
+      updateStats();
+      message.textContent = "";
+      board.replaceChildren();
+
+      document.querySelector("#startButton").hidden = true;
+      document.querySelector("#restartButton").hidden = false;
+
+      const cards = [];
+      selectedGroups.forEach(group => {
+        cards.push({ group, kind: "structure" });
+        cards.push({ group, kind: "name" });
+      });
+
+      shuffle(cards).forEach(item => board.appendChild(makeCard(item)));
+    }
+
+    function getResults() {
+      try {
+        return JSON.parse(localStorage.getItem(storageKey)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function renderResults() {
+      const tbody = document.querySelector("#results");
+      tbody.replaceChildren();
+
+      getResults().forEach(result => {
+        const row = document.createElement("tr");
+        [
+          result.player,
+          result.level,
+          `${result.correct} / ${result.total}`,
+          result.incorrect,
+          result.attempts,
+          result.time,
+          result.date
+        ].forEach(value => {
+          const cell = document.createElement("td");
+          cell.textContent = value;
+          row.appendChild(cell);
+        });
+        tbody.appendChild(row);
+      });
+    }
+
+    function finishGame() {
+      clearInterval(timer);
+      timer = null;
+      gameStarted = false;
+
+      const result = {
+        player: "Jugador",
+        level: selectedLevel,
+        correct,
+        total: selectedGroups.length,
+        incorrect,
+        attempts,
+        time: formatTime(seconds),
+        date: new Date().toLocaleString("es-CL")
+      };
+
+      try {
+        const results = getResults();
+        results.unshift(result);
+        localStorage.setItem(storageKey, JSON.stringify(results));
+        renderResults();
+
+        message.textContent =
+          `¡Completaste el memorice! Encontraste ${correct} parejas ` +
+          `en ${formatTime(seconds)}. El resultado quedó guardado en este equipo.`;
+      } catch {
+        message.textContent =
+          "Partida completada, pero el navegador no permitió guardar el resultado.";
+      }
+    }
+
+    document.querySelector("#startButton").addEventListener("click", startGame);
+    document.querySelector("#restartButton").addEventListener("click", startGame);
+
+    document.querySelector("#clearResults").addEventListener("click", () => {
+      if (confirm("¿Borrar el historial guardado en este equipo?")) {
+        localStorage.removeItem(storageKey);
+        renderResults();
+      }
+    });
+
+    renderGroupMenu();
+    renderResults();
+    updateStats();
+  </script>
+</body>
+</html>
