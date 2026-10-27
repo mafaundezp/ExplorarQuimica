@@ -52,7 +52,7 @@
       <tspan class="oxygen">O</tspan><tspan class="hydrogen">H</tspan>
     </text>
   </g>
-  <line class="bond" x1="111" y1="108" x2="146" y2="108"/>
+  <line class="bond" x1="111" y1="100" x2="146" y2="100"/>
 
   <!-- Aldehído: R–C(=O)–H -->
   <g class="label">
@@ -61,8 +61,8 @@
     <text class="hydrogen" x="426" y="108">H</text>
     <text class="oxygen" x="350" y="56">O</text>
   </g>
-  <line class="bond" x1="296" y1="108" x2="328" y2="108"/>
-  <line class="bond" x1="372" y1="108" x2="403" y2="108"/>
+  <line class="bond" x1="296" y1="100" x2="328" y2="100"/>
+  <line class="bond" x1="372" y1="100" x2="403" y2="100"/>
   <line class="bond" x1="346" y1="88" x2="346" y2="69"/>
   <line class="bond" x1="354" y1="88" x2="354" y2="69"/>
 
@@ -73,8 +73,8 @@
     <text class="substituent" x="674" y="108">R′</text>
     <text class="oxygen" x="592" y="56">O</text>
   </g>
-  <line class="bond" x1="533" y1="108" x2="570" y2="108"/>
-  <line class="bond" x1="614" y1="108" x2="652" y2="108"/>
+  <line class="bond" x1="533" y1="100" x2="570" y2="100"/>
+  <line class="bond" x1="614" y1="100" x2="652" y2="100"/>
   <line class="bond" x1="588" y1="88" x2="588" y2="69"/>
   <line class="bond" x1="596" y1="88" x2="596" y2="69"/>
 
@@ -87,8 +87,8 @@
     </text>
     <text class="oxygen" x="807" y="56">O</text>
   </g>
-  <line class="bond" x1="767" y1="108" x2="785" y2="108"/>
-  <line class="bond" x1="829" y1="108" x2="858" y2="108"/>
+  <line class="bond" x1="767" y1="100" x2="785" y2="100"/>
+  <line class="bond" x1="829" y1="100" x2="858" y2="100"/>
   <line class="bond" x1="803" y1="88" x2="803" y2="69"/>
   <line class="bond" x1="811" y1="88" x2="811" y2="69"/>
 
@@ -100,9 +100,9 @@
     <text class="substituent" x="203" y="323">R′</text>
     <text class="oxygen" x="87" y="271">O</text>
   </g>
-  <line class="bond" x1="55" y1="323" x2="65" y2="323"/>
-  <line class="bond" x1="109" y1="323" x2="124" y2="323"/>
-  <line class="bond" x1="166" y1="323" x2="181" y2="323"/>
+  <line class="bond" x1="55" y1="315" x2="65" y2="315"/>
+  <line class="bond" x1="109" y1="315" x2="124" y2="315"/>
+  <line class="bond" x1="166" y1="315" x2="181" y2="315"/>
   <line class="bond" x1="83" y1="303" x2="83" y2="284"/>
   <line class="bond" x1="91" y1="303" x2="91" y2="284"/>
 
@@ -112,107 +112,107 @@
     <text class="oxygen" x="360" y="323">O</text>
     <text class="substituent" x="425" y="323">R′</text>
   </g>
-  <line class="bond" x1="314" y1="323" x2="338" y2="323"/>
-  <line class="bond" x1="382" y1="323" x2="403" y2="323"/>
+  <line class="bond" x1="314" y1="315" x2="338" y2="315"/>
+  <line class="bond" x1="382" y1="315" x2="403" y2="315"/>
 
-<!-- Amina: R–NH₂ -->
-<text class="label substituent" x="535" y="323">R</text>
-<line class="bond" x1="556" y1="323" x2="576" y2="323"/>
+  <!-- Amina: R–NH₂ -->
+  <text class="label substituent" x="535" y="323">R</text>
+  <line class="bond" x1="556" y1="315" x2="576" y2="315"/>
 
-<text class="label nitrogen" x="590" y="323">N</text>
-<text class="label hydrogen" x="612" y="323">H</text>
-<text class="label hydrogen" x="628" y="334"
-      style="font-size:20px">2</text>
-      
-<!-- Amida: R–C(=O)–NH₂ -->
-<text class="label substituent" x="746" y="323">R</text>
-<text class="label carbon" x="807" y="323">C</text>
-<line class="bond" x1="767" y1="323" x2="785" y2="323"/>
-<line class="bond" x1="829" y1="323" x2="851" y2="323"/>
+  <text class="label nitrogen" x="590" y="323">N</text>
+  <text class="label hydrogen" x="612" y="323">H</text>
+  <text class="label hydrogen" x="628" y="334"
+        style="font-size:20px">2</text>
 
-<!-- Amida: fragmento –NH₂ -->
-<text class="label nitrogen" x="866" y="323">N</text>
-<text class="label hydrogen" x="888" y="323">H</text>
-<text class="label hydrogen" x="904" y="329"
-      style="font-size:20px">2</text>
+  <!-- Amida: R–C(=O)–NH₂ -->
+  <text class="label substituent" x="746" y="323">R</text>
+  <text class="label carbon" x="807" y="323">C</text>
+  <line class="bond" x1="767" y1="315" x2="785" y2="315"/>
+  <line class="bond" x1="829" y1="315" x2="851" y2="315"/>
 
-<text class="label oxygen" x="807" y="271">O</text>
-<line class="bond" x1="803" y1="303" x2="803" y2="284"/>
-<line class="bond" x1="811" y1="303" x2="811" y2="284"/>
+  <!-- Amida: fragmento –NH₂ -->
+  <text class="label nitrogen" x="866" y="323">N</text>
+  <text class="label hydrogen" x="888" y="323">H</text>
+  <text class="label hydrogen" x="904" y="329"
+        style="font-size:20px">2</text>
 
-<!-- Nuevas tarjetas: tercera fila -->
-<rect class="card" x="10"  y="440" width="225" height="195" rx="14"/>
-<rect class="card" x="247" y="440" width="225" height="195" rx="14"/>
-<rect class="card" x="484" y="440" width="225" height="195" rx="14"/>
-<rect class="card" x="721" y="440" width="225" height="195" rx="14"/>
+  <text class="label oxygen" x="807" y="271">O</text>
+  <line class="bond" x1="803" y1="303" x2="803" y2="284"/>
+  <line class="bond" x1="811" y1="303" x2="811" y2="284"/>
 
-<!-- Nuevas tarjetas: cuarta fila, centradas -->
-<rect class="card" x="247" y="655" width="225" height="195" rx="14"/>
-<rect class="card" x="484" y="655" width="225" height="195" rx="14"/>
+  <!-- Nuevas tarjetas: tercera fila -->
+  <rect class="card" x="10"  y="440" width="225" height="195" rx="14"/>
+  <rect class="card" x="247" y="440" width="225" height="195" rx="14"/>
+  <rect class="card" x="484" y="440" width="225" height="195" rx="14"/>
+  <rect class="card" x="721" y="440" width="225" height="195" rx="14"/>
 
-<!-- Anhídrido de ácido: R–C(=O)–O–C(=O)–R′ -->
-<g class="label">
-  <text class="substituent" x="38" y="538" font-size="26">R</text>
-  <text class="carbon" x="82" y="538" font-size="26">C</text>
-  <text class="oxygen" x="82" y="486" font-size="26">O</text>
-  <text class="oxygen" x="122" y="538" font-size="26">O</text>
-  <text class="carbon" x="162" y="538" font-size="26">C</text>
-  <text class="oxygen" x="162" y="486" font-size="26">O</text>
-  <text class="substituent" x="206" y="538" font-size="26">R′</text>
-</g>
-<line class="bond" x1="55" y1="538" x2="68" y2="538"/>
-<line class="bond" x1="94" y1="538" x2="111" y2="538"/>
-<line class="bond" x1="133" y1="538" x2="150" y2="538"/>
-<line class="bond" x1="174" y1="538" x2="186" y2="538"/>
-<line class="bond" x1="78" y1="518" x2="78" y2="500"/>
-<line class="bond" x1="86" y1="518" x2="86" y2="500"/>
-<line class="bond" x1="158" y1="518" x2="158" y2="500"/>
-<line class="bond" x1="166" y1="518" x2="166" y2="500"/>
+  <!-- Nuevas tarjetas: cuarta fila, centradas -->
+  <rect class="card" x="247" y="655" width="225" height="195" rx="14"/>
+  <rect class="card" x="484" y="655" width="225" height="195" rx="14"/>
 
-<!-- Halogenuro de ácido: R–C(=O)–Cl -->
-<g class="label">
-  <text class="substituent" x="278" y="538">R</text>
-  <text class="carbon" x="350" y="538">C</text>
-  <text class="oxygen" x="350" y="486">O</text>
-  <text class="halogen" x="420" y="538">Cl</text>
-</g>
-<line class="bond" x1="299" y1="538" x2="328" y2="538"/>
-<line class="bond" x1="372" y1="538" x2="397" y2="538"/>
-<line class="bond" x1="346" y1="518" x2="346" y2="499"/>
-<line class="bond" x1="354" y1="518" x2="354" y2="499"/>
+  <!-- Anhídrido de ácido: R–C(=O)–O–C(=O)–R′ -->
+  <g class="label">
+    <text class="substituent" x="38" y="538" font-size="26">R</text>
+    <text class="carbon" x="82" y="538" font-size="26">C</text>
+    <text class="oxygen" x="82" y="486" font-size="26">O</text>
+    <text class="oxygen" x="122" y="538" font-size="26">O</text>
+    <text class="carbon" x="162" y="538" font-size="26">C</text>
+    <text class="oxygen" x="162" y="486" font-size="26">O</text>
+    <text class="substituent" x="206" y="538" font-size="26">R′</text>
+  </g>
+  <line class="bond" x1="55" y1="530" x2="68" y2="530"/>
+  <line class="bond" x1="94" y1="530" x2="111" y2="530"/>
+  <line class="bond" x1="133" y1="530" x2="150" y2="530"/>
+  <line class="bond" x1="174" y1="530" x2="186" y2="530"/>
+  <line class="bond" x1="78" y1="518" x2="78" y2="500"/>
+  <line class="bond" x1="86" y1="518" x2="86" y2="500"/>
+  <line class="bond" x1="158" y1="518" x2="158" y2="500"/>
+  <line class="bond" x1="166" y1="518" x2="166" y2="500"/>
 
-<!-- Grupo nitro: R–NO₂ -->
-<text class="label substituent" x="520" y="538">R</text>
-<line class="bond" x1="541" y1="538" x2="568" y2="538"/>
+  <!-- Halogenuro de ácido: R–C(=O)–Cl -->
+  <g class="label">
+    <text class="substituent" x="278" y="538">R</text>
+    <text class="carbon" x="350" y="538">C</text>
+    <text class="oxygen" x="350" y="486">O</text>
+    <text class="halogen" x="420" y="538">Cl</text>
+  </g>
+  <line class="bond" x1="299" y1="530" x2="328" y2="530"/>
+  <line class="bond" x1="372" y1="530" x2="397" y2="530"/>
+  <line class="bond" x1="346" y1="518" x2="346" y2="499"/>
+  <line class="bond" x1="354" y1="518" x2="354" y2="499"/>
 
-<text class="label nitrogen" x="580" y="538">N</text>
-<text class="label oxygen" x="603" y="538">O</text>
-<text class="label substituent" x="620" y="548"
-      style="font-size:20px">2</text>
+  <!-- Grupo nitro: R–NO₂ -->
+  <text class="label substituent" x="520" y="538">R</text>
+  <line class="bond" x1="541" y1="530" x2="568" y2="530"/>
 
-<!-- Tiol: R–SH -->
-<text class="label substituent" x="770" y="538">R</text>
-<text class="label sulfur" x="835" y="538">S</text>
-<text class="label hydrogen" x="900" y="538">H</text>
-<line class="bond" x1="791" y1="538" x2="823" y2="538"/>
-<line class="bond" x1="847" y1="538" x2="879" y2="538"/>
+  <text class="label nitrogen" x="580" y="538">N</text>
+  <text class="label oxygen" x="603" y="538">O</text>
+  <text class="label substituent" x="620" y="548"
+        style="font-size:20px">2</text>
 
-<!-- Tioéter: R–S–R′ -->
-<text class="label substituent" x="290" y="753">R</text>
-<text class="label sulfur" x="360" y="753">S</text>
-<text class="label substituent" x="430" y="753">R′</text>
-<line class="bond" x1="311" y1="753" x2="348" y2="753"/>
-<line class="bond" x1="372" y1="753" x2="409" y2="753"/>
+  <!-- Tiol: R–SH -->
+  <text class="label substituent" x="770" y="538">R</text>
+  <text class="label sulfur" x="835" y="538">S</text>
+  <text class="label hydrogen" x="900" y="538">H</text>
+  <line class="bond" x1="791" y1="530" x2="823" y2="530"/>
+  <line class="bond" x1="847" y1="530" x2="879" y2="530"/>
 
-<!-- Tioéster: R–C(=O)–S–R′ -->
-<text class="label substituent" x="510" y="753">R</text>
-<text class="label carbon" x="563" y="753">C</text>
-<text class="label oxygen" x="563" y="701">O</text>
-<text class="label sulfur" x="615" y="753">S</text>
-<text class="label substituent" x="675" y="753">R′</text>
-<line class="bond" x1="531" y1="753" x2="541" y2="753"/>
-<line class="bond" x1="575" y1="753" x2="600" y2="753"/>
-<line class="bond" x1="630" y1="753" x2="654" y2="753"/>
-<line class="bond" x1="559" y1="733" x2="559" y2="714"/>
-<line class="bond" x1="567" y1="733" x2="567" y2="714"/>
+  <!-- Tioéter: R–S–R′ -->
+  <text class="label substituent" x="290" y="753">R</text>
+  <text class="label sulfur" x="360" y="753">S</text>
+  <text class="label substituent" x="430" y="753">R′</text>
+  <line class="bond" x1="311" y1="745" x2="348" y2="745"/>
+  <line class="bond" x1="372" y1="745" x2="409" y2="745"/>
+
+  <!-- Tioéster: R–C(=O)–S–R′ -->
+  <text class="label substituent" x="510" y="753">R</text>
+  <text class="label carbon" x="563" y="753">C</text>
+  <text class="label oxygen" x="563" y="701">O</text>
+  <text class="label sulfur" x="615" y="753">S</text>
+  <text class="label substituent" x="675" y="753">R′</text>
+  <line class="bond" x1="531" y1="745" x2="541" y2="745"/>
+  <line class="bond" x1="575" y1="745" x2="600" y2="745"/>
+  <line class="bond" x1="630" y1="745" x2="654" y2="745"/>
+  <line class="bond" x1="559" y1="733" x2="559" y2="714"/>
+  <line class="bond" x1="567" y1="733" x2="567" y2="714"/>
 </svg>
