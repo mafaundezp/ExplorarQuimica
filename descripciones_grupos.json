@@ -1,0 +1,16 @@
+{
+  "alcohol": "Contiene un grupo hidroxilo (–OH) unido a un carbono saturado. Se clasifica como primario, secundario o terciario según cuántos carbonos estén unidos al carbono que porta el –OH. No existe una clasificación habitual como alcohol cuaternario. El –OH puede estar en un carbono terminal o interno.",
+  "aldehido": "Contiene un grupo carbonilo terminal (–CHO): el carbono del C=O está unido a un hidrógeno y a un resto orgánico. Por ello, el grupo aldehído se encuentra en un extremo de la cadena carbonada.",
+  "cetona": "Contiene un grupo carbonilo (C=O) unido a dos átomos de carbono. En las cetonas acíclicas, el carbonilo se ubica dentro de la cadena, no en un extremo.",
+  "acido": "Contiene el grupo carboxilo (–COOH), formado por un carbonilo y un hidroxilo unidos al mismo carbono. El carbono del carboxilo está en un extremo del esqueleto carbonado.",
+  "ester": "Presenta el enlace –C(=O)–O– entre dos restos orgánicos. El carbono del carbonilo pertenece a un extremo del fragmento acilo, mientras que el oxígeno lo conecta con otro resto; por eso, el grupo puede formar parte de una cadena o estructura más extensa.",
+  "eter": "Un átomo de oxígeno enlaza dos grupos carbonados (R–O–R′). En cadenas acíclicas, el oxígeno suele estar entre ambos restos, no en un extremo.",
+  "amina": "Deriva del amoníaco y se clasifica según cuántos grupos carbonados estén unidos al nitrógeno: primaria (R–NH₂), secundaria (R₂NH) o terciaria (R₃N). El nitrógeno cuaternario (R₄N⁺) forma un ion amonio cuaternario, no una amina neutra. La posición del nitrógeno depende de la estructura.",
+  "amida": "Contiene un carbonilo unido directamente a un nitrógeno. Se clasifica como primaria (R–C(=O)–NH₂), secundaria (R–C(=O)–NHR′) o terciaria (R–C(=O)–NR′R″), según los sustituyentes del nitrógeno. No se suele hablar de amida cuaternaria neutra. El carbonilo está en un extremo del fragmento acilo.",
+  "anhidrido": "Contiene dos grupos acilo unidos por un oxígeno: R–C(=O)–O–C(=O)–R′. Los carbonilos se encuentran en los extremos de esos fragmentos; el oxígeno enlaza ambos.",
+  "halogenuro": "Contiene un grupo acilo unido a un halógeno: R–C(=O)–X, donde X puede ser F, Cl, Br o I. El carbono del carbonilo está en el extremo del fragmento acilo.",
+  "nitro": "Contiene el grupo nitro (–NO₂), unido al esqueleto carbonado por el nitrógeno. Puede estar en distintas posiciones, no necesariamente en un extremo. R–NO₂ es una fórmula condensada; los enlaces y las cargas se describen mediante estructuras de resonancia.",
+  "tiol": "Contiene un grupo sulfhidrilo (–SH) unido a un carbono. Puede ser primario, secundario o terciario según el número de carbonos enlazados al carbono que porta el –SH. El grupo puede estar en un carbono terminal o interno.",
+  "tioeter": "Un átomo de azufre enlaza dos grupos carbonados (R–S–R′); también se denomina sulfuro orgánico. En cadenas acíclicas, el azufre está entre ambos restos, no en un extremo.",
+  "tioester": "Presenta un grupo acilo unido a azufre: R–C(=O)–S–R′. El carbono del carbonilo está en el extremo del fragmento acilo, y el azufre lo conecta con otro resto orgánico."
+}
